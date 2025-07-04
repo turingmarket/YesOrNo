@@ -61,7 +61,7 @@ export function MarketList({ neynarUser }: HeaderProps) {
         <Card key={market.id} size="3" mb="4">
           <Inset clip="padding-box" side="top" pb="current">
             <img
-              src={market.imageUrl}
+              src={market.image}
               style={{
                 display: "block",
                 objectFit: "cover",
@@ -75,7 +75,7 @@ export function MarketList({ neynarUser }: HeaderProps) {
             <Text as="div" size="2" weight="bold">
               {market.title}
             </Text>
-            <MarketMeta />
+            <MarketMeta data={market.markets[0]} />
             <Flex gap="3" justify="between">
               <Button color="green" radius="large" size="4">
                 Yes
