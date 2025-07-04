@@ -33,6 +33,7 @@ import { BaseError, UserRejectedRequestError } from "viem";
 import { useSession } from "next-auth/react";
 import { useMiniApp } from "@neynar/react";
 import { PublicKey, SystemProgram, Transaction } from '@solana/web3.js';
+import { MarketList } from "~/components/ui/market/List";
 import { Header } from "~/components/ui/Header";
 import { Footer } from "~/components/ui/Footer";
 import { USE_WALLET, APP_NAME } from "~/lib/constants";
@@ -241,8 +242,9 @@ export default function Demo(
         {currentTab === 'home' && (
           <div className="flex items-center justify-center h-[calc(100vh-200px)] px-6">
             <div className="text-center w-full max-w-md mx-auto">
-              <p className="text-lg mb-2">Put your content here!</p>
-              <p className="text-sm text-gray-500">Powered by Neynar 🪐</p>
+              <MarketList />
+              {/* <p className="text-lg mb-2">Put your content here!</p>
+              <p className="text-sm text-gray-500">Powered by Neynar 🪐</p> */}
             </div>
           </div>
         )}

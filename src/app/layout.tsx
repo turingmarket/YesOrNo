@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-
+import "@radix-ui/themes/styles.css";
+import { Theme, ThemePanel } from "@radix-ui/themes";
 import { getSession } from "~/auth"
 import "~/app/globals.css";
 import { Providers } from "~/app/providers";
@@ -20,7 +21,10 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body>
-        <Providers session={session}>{children}</Providers>
+        <Theme accentColor="lime" grayColor="slate">
+          <Providers session={session}>{children}</Providers>
+          {/* <ThemePanel /> */}
+        </Theme>
       </body>
     </html>
   );
