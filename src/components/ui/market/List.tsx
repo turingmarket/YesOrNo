@@ -78,10 +78,24 @@ export function MarketList({ neynarUser }: HeaderProps) {
             <MarketMeta data={market.markets[0]} />
             <Flex gap="3" justify="between">
               <Button color="green" radius="large" size="4">
-                Yes
+                <Flex direction="column" justify="center" align="center">
+                  <Text as="div" size="3" weight="bold" mt="4">
+                    {market.markets[0].yesPrice}
+                  </Text>
+                  <Text as="div" size="3" weight="bold" mb="4">
+                    Buy Yes
+                  </Text>
+                </Flex>
               </Button>
               <Button color="red" radius="large" size="4">
-                No
+                <Flex direction="column" justify="center" align="center">
+                  <Text as="div" size="3" weight="bold" mt="4">
+                    {market.markets[0].noPrice}
+                  </Text>
+                  <Text as="div" size="3" weight="bold" mb="4">
+                    Buy No
+                  </Text>
+                </Flex>
               </Button>
             </Flex>
           </Flex>
