@@ -28,15 +28,15 @@ import { ShareButton } from "./ui/Share";
 import { config } from "~/components/providers/WagmiProvider";
 import { Button } from "~/components/ui/Button";
 import { truncateAddress } from "~/lib/truncateAddress";
-import { base, degen, mainnet, optimism, unichain } from "wagmi/chains";
+import { base, degen, mainnet, optimism, unichain, avalancheFuji } from "wagmi/chains";
 import { BaseError, UserRejectedRequestError } from "viem";
 import { useSession } from "next-auth/react";
 import { useMiniApp } from "@neynar/react";
 import { PublicKey, SystemProgram, Transaction } from '@solana/web3.js';
 import { MarketList } from "~/components/ui/market/List";
+import { USE_WALLET, APP_NAME } from "~/lib/constants";
 import { Header } from "~/components/ui/Header";
 import { Footer } from "~/components/ui/Footer";
-import { USE_WALLET, APP_NAME } from "~/lib/constants";
 
 export type Tab = 'home' | 'actions' | 'context' | 'wallet';
 
@@ -234,13 +234,13 @@ export default function Demo(
         paddingRight: context?.client.safeAreaInsets?.right ?? 0,
       }}
     >
-      <div className="mx-auto py-2 px-4 pb-20">
+      <div className="mx-auto py-2 px-4 pb-20 pt-[100px]">
         <Header neynarUser={neynarUser} />
 
         <h1 className="text-2xl font-bold text-center mb-4">{title}</h1>
 
         {currentTab === 'home' && (
-          <div className="flex items-center justify-center h-[calc(100vh-200px)] px-6">
+          <div className="flex items-center justify-center px-6">
             <div className="flex-1 w-full max-w-md mx-auto">
               <MarketList />
             </div>
@@ -378,6 +378,7 @@ export default function Demo(
               </div>
             )}
 
+            <MarketLogin />
             <SignEvmMessage />
 
             {isConnected && (
@@ -428,7 +429,8 @@ export default function Demo(
           </div>
         )}
 
-        <Footer activeTab={currentTab as Tab} setActiveTab={setActiveTab} showWallet={USE_WALLET} />
+      <Footer activeTab={currentTab as Tab} setActiveTab={setActiveTab} showWallet={USE_WALLET} />
+
       </div>
     </div>
   );
@@ -589,6 +591,48 @@ function SignEvmMessage() {
         isLoading={isSignPending}
       >
         Sign Message
+      </Button>
+      {isSignError && renderError(signError)}
+      {signature && (
+        <div className="mt-2 text-xs">
+          <div>Signature: {signature}</div>
+        </div>
+      )}
+    </>
+  );
+}
+
+
+function MarketLogin() {
+  const { isConnected } = useAccount();
+  const { connectAsync } = useConnect();
+  const {
+    signMessage,
+    data: signature,
+    error: signError,
+    isError: isSignError,
+    isPending: isSignPending,
+  } = useSignMessage();
+
+  const handleSignMessage = useCallback(async () => {
+    if (true || !isConnected) {
+      await connectAsync({
+        chainId: avalancheFuji.id,
+        connector: config.connectors[0],
+      });
+    }
+
+    signMessage({ message: `Hello from ${APP_NAME}!` });
+  }, [connectAsync, isConnected, signMessage]);
+
+  return (
+    <>
+      <Button
+        onClick={handleSignMessage}
+        disabled={isSignPending}
+        isLoading={isSignPending}
+      >
+        Market Login
       </Button>
       {isSignError && renderError(signError)}
       {signature && (
